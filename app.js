@@ -3,12 +3,11 @@
  */
 
 var express = require('express'),
-	routes = require('./routes');
-
-var app = module.exports = express.createServer();
+		routes = require('./routes'),
+		io = require('socket.io').listen(app),
+		app = module.exports = express.createServer();
 
 // Configuration
-
 app.configure(function(){
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
@@ -26,8 +25,6 @@ app.configure('production', function(){
 	app.use(express.errorHandler());
 });
 
-// Routes
-var io = require('socket.io').listen(app);
 
 app.get('/', routes.index);
 
