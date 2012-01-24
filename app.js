@@ -4,7 +4,6 @@
 
 var express = require('express'),
 		routes = require('./routes'),
-		io = require('socket.io').listen(app),
 		app = module.exports = express.createServer();
 
 // Configuration
@@ -25,6 +24,7 @@ app.configure('production', function(){
 	app.use(express.errorHandler());
 });
 
+var io = require('socket.io').listen(app);
 
 app.get('/', routes.index);
 
