@@ -24,6 +24,7 @@ app.configure('production', function(){
 	app.use(express.errorHandler());
 });
 
+// import socket IO.
 var io = require('socket.io').listen(app);
 
 app.get('/', routes.index);
