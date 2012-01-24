@@ -1,25 +1,50 @@
 function createWorld() {
-	var worldAABB = new b2AABB();
-	worldAABB.minVertex.Set(-1000, -1000);
-	worldAABB.maxVertex.Set(1000, 1000);
-	var gravity = new b2Vec2(0, 300);
-	var doSleep = true;
-	var world = new b2World(worldAABB, gravity, doSleep);
-	createGround(world);
-	createBox(world, 0, 225, 10, 250);
-	createBox(world, 600, 225, 10, 250);
-	return world;
+	return new b2World(
+		new b2Vec2(0, 10), 	//gravity
+		true 								//allow sleep
+	);
 }
 
 function createGround(world) {
-	var groundSd = new b2BoxDef();
-	groundSd.extents.Set(1200, 50);
-	groundSd.restitution = 0.5;
-	groundSd.friction = 0.3;
-	var groundBd = new b2BodyDef();
-	groundBd.AddShape(groundSd);
-	groundBd.position.Set(-600, 440);
-	return world.CreateBody(groundBd)
+
+	var fixDef = new b2FixtureDef;
+	fixDef.density = 1.0;
+	fixDef.friction = 0.5;
+	fixDef.restitution = 0.2;
+
+	var bodyDef = new b2BodyDef;
+	bodyDef.type = b2Body.b2_staticBody;
+	// Positions the center of the object (not upper left!)
+	bodyDef.position.x = CANVAS_WIDTH / 2 / SCALE;
+	bodyDef.position.y = CANVAS_HEIGHT / SCALE;
+
+	fixDef.shape = new b2PolygonShape;
+	// Half width, half height.
+	fixDef.shape.SetAsBox((600 / SCALE) / 2, (10/SCALE) / 2);
+
+	// Add to world
+	world.CreateBody(bodyDef).CreateFixture(fixDef);
+}
+
+function createLoadsaStuff(world) {
+	bodyDef.type = b2Body.b2_dynamicBody;
+
+	for(var i = 0; i < 10; ++i) {
+		if(Math.random() > 0.5) {
+			fixDef.shape = new b2PolygonShape;
+			fixDef.shape.SetAsBox(
+				Math.random() + 0.1, //half width
+				Math.random() + 0.1 //half height
+			);
+		} else {
+			fixDef.shape = new b2CircleShape(
+				Math.random() + 0.1 //radius
+			);
+		}
+		bodyDef.position.x = Math.random() * 25;
+		bodyDef.position.y = Math.random() * 10;
+		world.CreateBody(bodyDef).CreateFixture(fixDef);
+}
 }
 
 function createBall(world, x, y) {
@@ -47,7 +72,25 @@ function createBox(world, x, y, width, height, fixed) {
 	return world.CreateBody(boxBd)
 }
 
-jQuery(function (){ 
+function debugDraw() {
+	var debugDraw = new b2DebugDraw();
+	debugDraw.SetSprite(document.getElementById("socketbox").getContext("2d"));
+	debugDraw.SetDrawScale(SCALE);
+	debugDraw.SetFillAlpha(0.3);
+	debugDraw.SetLineThickness(1.0);
+	debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+	world.SetDebugDraw(debugDraw);
+}
+
+$(function (){ 
+
+	// Box2D
+	var world = createWorld();
+	createGround(world);
+	createLoadsaStuff(world);
+	debugDraw();
+
+	// Sockets
 	var socket = io.connect('http://localhost');
 	socket.on('connection');
 	socket.on('user connected', function (data) {
