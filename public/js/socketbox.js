@@ -20,6 +20,16 @@
 			createLoadsaStuff(world, 100);
 			debugDraw(world);
 			gameLoop(world);
+			setupStats();
+		}
+
+		function setupStats() {
+			var stats = new Stats();
+			$(base).parent().append(stats.domElement);
+
+			setInterval( function () {
+				stats.update();
+			}, 1000 / framerate );
 		}
 
 		function gameLoop(world) {
