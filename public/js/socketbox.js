@@ -13,6 +13,9 @@
 
 		// Sockets
 		setupSockets();
+		
+		// Stats
+		setupStats();
 
 		function setupWorld() {
 			var world = createWorld();
@@ -20,7 +23,6 @@
 			createLoadsaStuff(world, 100);
 			debugDraw(world);
 			gameLoop(world);
-			setupStats();
 		}
 
 		function setupStats() {
