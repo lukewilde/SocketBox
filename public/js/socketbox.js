@@ -2,7 +2,8 @@
 	$.fn.socketbox = function() {
 
 		var base = this;
-		var SCALE = 30;
+		var scale = 30;
+		var framerate = 60;
 		var bodyDef;
 		var fixDef;
 		var world;
@@ -25,12 +26,12 @@
 			// console.log(world);
 			setInterval(function(){
 				update(world); 
-			}, 20);
+			}, 1000 / framerate);
 		}
 
 		function update(world) {
 			world.Step(
-				1 / 60,   //frame-rate
+				1 / framerate,   //frame-rate
 				10,       //velocity iterations
 				10       //position iterations
 			);
@@ -67,12 +68,12 @@
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
 
 			// positions the center of the object (not upper left!)
-			bodyDef.position.x = $('base').width() / 2 / SCALE;
-			bodyDef.position.y = $('base').height() / SCALE;
+			bodyDef.position.x = $('base').width() / 2 / scale;
+			bodyDef.position.y = $('base').height() / scale;
 
 			fixDef.shape = new Box2D.Collision.Shapes.b2PolygonShape;
 			// Half width, half height.
-			fixDef.shape.SetAsBox((600 / SCALE) / 2, (10/SCALE) / 2);
+			fixDef.shape.SetAsBox((600 / scale) / 2, (10 / scale) / 2);
 
 			// Add to world
 			world.CreateBody(bodyDef).CreateFixture(fixDef);
@@ -127,7 +128,7 @@
 		function debugDraw(world) {
 			var debugDraw = new Box2D.Dynamics.b2DebugDraw();
 			debugDraw.SetSprite($(base)[0].getContext("2d"));
-			debugDraw.SetDrawScale(SCALE);
+			debugDraw.SetDrawScale(scale);
 			debugDraw.SetFillAlpha(0.3);
 			debugDraw.SetLineThickness(1.0);
 			debugDraw.SetFlags(Box2D.Dynamics.b2DebugDraw.e_shapeBit | Box2D.Dynamics.b2DebugDraw.e_jointBit);
