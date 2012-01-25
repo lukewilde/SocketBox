@@ -1,4 +1,4 @@
-(function ($){ 
+(function ($, Box2D){ 
 	$.fn.socketbox = function() {
 
 		var base = this;
@@ -28,7 +28,7 @@
 		}
 
 		function createWorld() {
-			return new b2World(
+			return new Box2D.Dynamics.b2World(
 				new b2Vec2(0, 10), 	//gravity
 				true 								//allow sleep
 			);
@@ -111,4 +111,4 @@
 			world.SetDebugDraw(debugDraw);
 		}
 	}
-}(jQuery));
+}(jQuery, Box2D));
