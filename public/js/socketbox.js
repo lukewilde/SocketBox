@@ -17,7 +17,7 @@
 		function setupWorld() {
 			var world = createWorld();
 			createGround(world);
-			createLoadsaStuff(world);
+			createLoadsaStuff(world, 100);
 			debugDraw(world);
 			gameLoop(world);
 		}
@@ -79,10 +79,10 @@
 			world.CreateBody(bodyDef).CreateFixture(fixDef);
 		}
 
-		function createLoadsaStuff(world) {
+		function createLoadsaStuff(world, howManyThings) {
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
 
-			for(var i = 0; i < 10; ++i) {
+			for(var i = 0; i < howManyThings; ++i) {
 				if(Math.random() > 0.5) {
 					fixDef.shape = new Box2D.Collision.Shapes.b2PolygonShape;
 					fixDef.shape.SetAsBox(
