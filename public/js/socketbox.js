@@ -68,8 +68,8 @@
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
 
 			// positions the center of the object (not upper left!)
-			bodyDef.position.x = $('base').width() / 2 / scale;
-			bodyDef.position.y = $('base').height() / scale;
+			bodyDef.position.x = $(base).width() / 2 / scale;
+			bodyDef.position.y = $(base).height() / scale;
 
 			fixDef.shape = new Box2D.Collision.Shapes.b2PolygonShape;
 			// Half width, half height.
