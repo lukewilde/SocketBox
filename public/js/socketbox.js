@@ -5,6 +5,7 @@
 		var SCALE = 30;
 		var bodyDef;
 		var fixDef;
+		var world;
 
 		// Box2D
 		setupWorld();
@@ -17,7 +18,25 @@
 			createGround(world);
 			createLoadsaStuff(world);
 			debugDraw(world);
+			gameLoop(world);
 		}
+
+		function gameLoop(world) {
+			// console.log(world);
+			setInterval(function(){
+				update(world); 
+			}, 20);
+		}
+
+		function update(world) {
+			world.Step(
+				1 / 60,   //frame-rate
+				10,       //velocity iterations
+				10       //position iterations
+			);
+			world.DrawDebugData();
+			world.ClearForces();
+		};
 
 		function setupSockets() {
 			var socket = io.connect('http://localhost');
