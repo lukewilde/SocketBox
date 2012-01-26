@@ -33,7 +33,7 @@ app.get('/', routes.index);
 io.sockets.on('connection', function (socket) {
 	socket.broadcast.emit('user connected', {message : 'User connected'});
 	
-	socket.on('drop', function (data) {	
+	socket.on('dropped', function (data) {	
 		socket.broadcast.emit('place ball', {x : data.x, y : data.y});
 	});
 });

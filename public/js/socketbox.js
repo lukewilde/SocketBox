@@ -20,11 +20,15 @@
 		setupStats();
 
 		function setupWorld() {
+
+			// Setup world
 			world = createWorld();
-			createGround();
+			createWalls();
 			// createLoadsaStuff(100);
+			setupLevel();
+
+			// Setup animations
 			debugDraw();
-			setupLevel();	
 			gameLoop();
 			initInterface();
 		}
@@ -69,15 +73,27 @@
 			bodyDef = new Box2D.Dynamics.b2BodyDef;
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
 
-			var x = 0;
+			var x = 1.5;
+			var y = 4;
 
-			for (var i = 0; i < 1; i += 1) {
+			for (; y < $(base).height() / scale; x += 3) {
+
+				if (x > $(base).width() / scale) {
+
+					y += 4;
+
+					if (y % 8 == 0) {
+						x = 3;
+					} else {
+						x = 1.5;
+					}
+				}
 
 				// positions the center of the object (not upper left!)
-				bodyDef.position.x = 5;
-				bodyDef.position.y = 5;
+				bodyDef.position.x = x;
+				bodyDef.position.y = y;
 
-				fixDef.shape = new Box2D.Collision.Shapes.b2CircleShape(0.3);
+				fixDef.shape = new Box2D.Collision.Shapes.b2CircleShape(0.2);
 				world.CreateBody(bodyDef).CreateFixture(fixDef);
 			}
 		}
@@ -90,6 +106,7 @@
 			});
 
 			socket.on('place ball', function(data) {
+				console.log(data);
 				createBall(data.x, data.y);
 			});
 		}
@@ -101,7 +118,7 @@
 			);
 		}
 
-		function createGround() {
+		function createWalls() {
 
 			fixDef = new Box2D.Dynamics.b2FixtureDef;
 			fixDef.density = 1.0;
