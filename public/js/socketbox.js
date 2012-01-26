@@ -23,7 +23,7 @@
 		function setupWorld() {
 			world = createWorld();
 			createGround();
-			createLoadsaStuff(1);
+			// createLoadsaStuff(100);
 			debugDraw();
 			gameLoop();
 			initInterface(world);
@@ -127,19 +127,6 @@
 
 			return world.CreateBody(bodyDef).CreateFixture(fixDef);
 		}
-
-		function createBox(x, y, width, height, fixed) {
-			if (typeof(fixed) == 'undefined') fixed = true;
-			var boxSd = new b2BoxDef();
-			boxSd.restitution = 0.6;
-			boxSd.friction = .3;
-			if (!fixed) boxSd.density = 1.0;
-			boxSd.extents.Set(width, height);
-			var boxBd = new b2BodyDef();
-			boxBd.AddShape(boxSd);
-			boxBd.position.Set(x,y);
-			return world.CreateBody(boxBd)
-		}	
 
 		function debugDraw() {
 			var debugDraw = new Box2D.Dynamics.b2DebugDraw();
