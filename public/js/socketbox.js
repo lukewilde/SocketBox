@@ -2,13 +2,12 @@
 	$.fn.socketbox = function() {
 
 		var base = this;
-		var offset = base.offset();
 
 		var scale = 30;
 		var framerate = 60;
 		var bodyDef;
 		var fixDef;
-		// var world;
+		var world;
 
 		// Box2D
 		setupWorld();
@@ -22,11 +21,11 @@
 		// Inter...
 
 		function setupWorld() {
-			var world = createWorld();
-			createGround(world);
-			createLoadsaStuff(world, 100);
-			debugDraw(world);
-			gameLoop(world);
+			world = createWorld();
+			createGround();
+			createLoadsaStuff(1);
+			debugDraw();
+			gameLoop();
 			initInterface(world);
 		}
 
@@ -39,14 +38,14 @@
 			}, 1000 / framerate );
 		}
 
-		function gameLoop(world) {
+		function gameLoop() {
 			// console.log(world);
 			setInterval(function(){
-				update(world); 
+				update(); 
 			}, 1000 / framerate);
 		}
 
-		function update(world) {
+		function update() {
 			world.Step(
 				1 / framerate,   //frame-rate
 				10,       //velocity iterations
@@ -74,7 +73,7 @@
 			);
 		}
 
-		function createGround(world) {
+		function createGround() {
 
 			fixDef = new Box2D.Dynamics.b2FixtureDef;
 			fixDef.density = 1.0;
@@ -96,7 +95,7 @@
 			world.CreateBody(bodyDef).CreateFixture(fixDef);
 		}
 
-		function createLoadsaStuff(world, howManyThings) {
+		function createLoadsaStuff(howManyThings) {
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
 
 			for(var i = 0; i < howManyThings; ++i) {
@@ -113,18 +112,23 @@
 				}
 				bodyDef.position.x = Math.random() * 25;
 				bodyDef.position.y = Math.random() * 10;
+
+				console.log(bodyDef.position.x, bodyDef.position.y);
+
 				world.CreateBody(bodyDef).CreateFixture(fixDef);
 			}
 		}
 
-		function createBall(world, x, y) {
+		function createBall(x, y) {
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
 			bodyDef.position.x = x;
 			bodyDef.position.y = y;
+
 			fixDef.shape = new Box2D.Collision.Shapes.b2CircleShape(
 				Math.random() + 0.1 //radius
 			);
 
+			console.log(x, y); 
 			return world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 			// ballBd.AddShape(ballSd);
@@ -132,7 +136,7 @@
 			// return world.CreateBody(ballBd);
 		}
 
-		function createBox(world, x, y, width, height, fixed) {
+		function createBox(x, y, width, height, fixed) {
 			if (typeof(fixed) == 'undefined') fixed = true;
 			var boxSd = new b2BoxDef();
 			boxSd.restitution = 0.6;
@@ -145,7 +149,7 @@
 			return world.CreateBody(boxBd)
 		}	
 
-		function debugDraw(world) {
+		function debugDraw() {
 			var debugDraw = new Box2D.Dynamics.b2DebugDraw();
 			debugDraw.SetSprite($(base)[0].getContext("2d"));
 			debugDraw.SetDrawScale(scale);
@@ -155,20 +159,18 @@
 			world.SetDebugDraw(debugDraw);
 		}
 
-		function initInterface(world) {
+		function initInterface() {
 			$(base).click(function(event){
-				console.log(getMouseX(event));
-				// createBall(world, getMouseX(event), getMouseY(event));
+				createBall(getMouseX(event), getMouseY(event));
 			});
 		}
 
 		function getMouseX(event) {
-			console.log(this.offsetLeft);
-			return event.pageX - base.offsetLeft;
+			return (event.pageX - base[0].offsetLeft) / scale;
 		}
 
 		function getMouseY(event) {
-			return event.pageY - base.offsetTop;
+			return (event.pageY - base[0].offsetTop) / scale;
 		}
 	}
 }(jQuery, Box2D));
