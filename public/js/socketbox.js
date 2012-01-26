@@ -122,7 +122,8 @@
 			bodyDef.position.y = y;
 
 			fixDef.shape = new Box2D.Collision.Shapes.b2CircleShape(
-				Math.random() + 0.1 //radius
+				// Math.random() + 0.1 //radius
+				1
 			);
 
 			return world.CreateBody(bodyDef).CreateFixture(fixDef);
