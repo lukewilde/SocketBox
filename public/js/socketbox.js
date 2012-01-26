@@ -68,7 +68,7 @@
 			fixDef = new Box2D.Dynamics.b2FixtureDef;
 			fixDef.density = 1.0;
 			fixDef.friction = 0.5;
-			fixDef.restitution = 0.2
+			fixDef.restitution = 0.8;
 
 			bodyDef = new Box2D.Dynamics.b2BodyDef;
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
