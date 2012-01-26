@@ -2,11 +2,13 @@
 	$.fn.socketbox = function() {
 
 		var base = this;
+		var offset = base.offset();
+
 		var scale = 30;
 		var framerate = 60;
 		var bodyDef;
 		var fixDef;
-		var world;
+		// var world;
 
 		// Box2D
 		setupWorld();
@@ -17,12 +19,15 @@
 		// Stats
 		setupStats();
 
+		// Inter...
+
 		function setupWorld() {
 			var world = createWorld();
 			createGround(world);
 			createLoadsaStuff(world, 100);
 			debugDraw(world);
 			gameLoop(world);
+			initInterface(world);
 		}
 
 		function setupStats() {
@@ -113,15 +118,18 @@
 		}
 
 		function createBall(world, x, y) {
-			var ballSd = new Box2D.Dynamics.b2CircleDef();
-			ballSd.density = 1.0;
-			ballSd.radius = 20;
-			ballSd.restitution = 0.6;
-			ballSd.friction = 0.4;
-			var ballBd = new b2BodyDef();
-			ballBd.AddShape(ballSd);
-			ballBd.position.Set(x,y);
-			return world.CreateBody(ballBd);
+			bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
+			bodyDef.position.x = x;
+			bodyDef.position.y = y;
+			fixDef.shape = new Box2D.Collision.Shapes.b2CircleShape(
+				Math.random() + 0.1 //radius
+			);
+
+			return world.CreateBody(bodyDef).CreateFixture(fixDef);
+
+			// ballBd.AddShape(ballSd);
+			// ballBd.position.Set(x,y);
+			// return world.CreateBody(ballBd);
 		}
 
 		function createBox(world, x, y, width, height, fixed) {
@@ -145,6 +153,22 @@
 			debugDraw.SetLineThickness(1.0);
 			debugDraw.SetFlags(Box2D.Dynamics.b2DebugDraw.e_shapeBit | Box2D.Dynamics.b2DebugDraw.e_jointBit);
 			world.SetDebugDraw(debugDraw);
+		}
+
+		function initInterface(world) {
+			$(base).click(function(event){
+				console.log(getMouseX(event));
+				// createBall(world, getMouseX(event), getMouseY(event));
+			});
+		}
+
+		function getMouseX(event) {
+			console.log(this.offsetLeft);
+			return event.pageX - base.offsetLeft;
+		}
+
+		function getMouseY(event) {
+			return event.pageY - base.offsetTop;
 		}
 	}
 }(jQuery, Box2D));
