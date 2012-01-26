@@ -34,7 +34,7 @@ io.sockets.on('connection', function (socket) {
 	socket.broadcast.emit('user connected', {message : 'User connected'});
 	
 	socket.on('drop', function (data) {	
-		socket.broadcast.emit('placeBall', {x : data.x, y data.y});
+		socket.broadcast.emit('place ball', {x : data.x, y : data.y});
 	});
 });
 

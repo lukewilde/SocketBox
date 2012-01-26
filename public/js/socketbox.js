@@ -8,6 +8,7 @@
 		var bodyDef;
 		var fixDef;
 		var world;
+		var socket;
 
 		// Box2D
 		setupWorld();
@@ -55,12 +56,12 @@
 		};
 
 		function setupSockets() {
-			var socket = io.connect('http://localhost');
+			socket = io.connect('http://localhost');
 			socket.on('connection');
 			socket.on('user connected', function(data) {
 				jQuery('body').append('<p>' + data.message + '</p>');
 			});
-			socket.on('place ball'), function(data) {
+			socket.on('place ball', function(data) {
 				createBall(data.x, data.y);
 			});
 		}
@@ -144,7 +145,7 @@
 				createBall(getMouseX(event), getMouseY(event));
 
 				// To server
-				socket.emit('drop', { x: 0, y: 0 });
+				socket.emit('drop', { x: getMouseX(event), y: getMouseY(event) });
 			});
 		}
 
