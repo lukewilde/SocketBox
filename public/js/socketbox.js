@@ -39,7 +39,6 @@
 		}
 
 		function gameLoop() {
-			// console.log(world);
 			setInterval(function(){
 				update(); 
 			}, 1000 / framerate);
@@ -113,8 +112,6 @@
 				bodyDef.position.x = Math.random() * 25;
 				bodyDef.position.y = Math.random() * 10;
 
-				console.log(bodyDef.position.x, bodyDef.position.y);
-
 				world.CreateBody(bodyDef).CreateFixture(fixDef);
 			}
 		}
@@ -128,12 +125,7 @@
 				Math.random() + 0.1 //radius
 			);
 
-			console.log(x, y); 
 			return world.CreateBody(bodyDef).CreateFixture(fixDef);
-
-			// ballBd.AddShape(ballSd);
-			// ballBd.position.Set(x,y);
-			// return world.CreateBody(ballBd);
 		}
 
 		function createBox(x, y, width, height, fixed) {
