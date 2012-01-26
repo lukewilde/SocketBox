@@ -124,18 +124,30 @@
 			fixDef.density = 1.0;
 			fixDef.friction = 0.5;
 			fixDef.restitution = 0.2;
+			fixDef.shape = new Box2D.Collision.Shapes.b2PolygonShape;
 
 			bodyDef = new Box2D.Dynamics.b2BodyDef;
 			bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
 
+
 			// positions the center of the object (not upper left!)
+			// Half width, half height!
+
+			//Floor
 			bodyDef.position.x = $(base).width() / 2 / scale;
 			bodyDef.position.y = $(base).height() / scale;
+			fixDef.shape.SetAsBox(($(base).width() / scale) / 2,(10 / scale) / 2);
+			world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-			fixDef.shape = new Box2D.Collision.Shapes.b2PolygonShape;
-			// Half width, half height.
-			fixDef.shape.SetAsBox((600 / scale) / 2, (10 / scale) / 2);
-
+			// Left wall
+			bodyDef.position.x = 0;
+			bodyDef.position.y = $(base).height() / 2 / scale;
+			fixDef.shape.SetAsBox((10 / scale) / 2, ($(base).width() / scale));
+			world.CreateBody(bodyDef).CreateFixture(fixDef);
+			
+			bodyDef.position.x = $(base).width() / scale;
+			bodyDef.position.y = $(base).height() / 2 / scale;
+			fixDef.shape.SetAsBox((10 / scale) / 2, ($(base).width() / scale));
 			// Add to world
 			world.CreateBody(bodyDef).CreateFixture(fixDef);
 		}
