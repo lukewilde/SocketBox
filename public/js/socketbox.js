@@ -19,15 +19,13 @@
 		// Stats
 		setupStats();
 
-		// Inter...
-
 		function setupWorld() {
 			world = createWorld();
 			createGround();
 			// createLoadsaStuff(100);
 			debugDraw();
 			gameLoop();
-			initInterface(world);
+			initInterface();
 		}
 
 		function setupStats() {
