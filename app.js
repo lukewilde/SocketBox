@@ -29,8 +29,13 @@ var io = require('socket.io').listen(app);
 
 app.get('/', routes.index);
 
+
 io.sockets.on('connection', function (socket) {
 	socket.broadcast.emit('user connected', {message : 'User connected'});
+	
+	socket.on('drop', function (data) {	
+		socket.broadcast.emit('placeBall', {x : data.x, y data.y});
+	});
 });
 
 app.listen(3000);

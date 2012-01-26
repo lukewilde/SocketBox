@@ -57,11 +57,11 @@
 		function setupSockets() {
 			var socket = io.connect('http://localhost');
 			socket.on('connection');
-			socket.on('user connected', function (data) {
+			socket.on('user connected', function(data) {
 				jQuery('body').append('<p>' + data.message + '</p>');
-
-				// fire new events
-				// socket.emit('server side event', { my: 'data' });
+			});
+			socket.on('place ball'), function(data) {
+				createBall(data.x, data.y);
 			});
 		}
 
@@ -142,6 +142,9 @@
 		function initInterface() {
 			$(base).click(function(event){
 				createBall(getMouseX(event), getMouseY(event));
+
+				// To server
+				socket.emit('drop', { x: 0, y: 0 });
 			});
 		}
 
