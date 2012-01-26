@@ -24,6 +24,7 @@
 			createGround();
 			// createLoadsaStuff(100);
 			debugDraw();
+			setupLevel();	
 			gameLoop();
 			initInterface();
 		}
@@ -53,12 +54,41 @@
 			world.ClearForces();
 		};
 
+		function setupLevel () {
+			createPegs();
+			// createLabels();
+			// displayTotals();
+		}
+
+		function createPegs () {
+			fixDef = new Box2D.Dynamics.b2FixtureDef;
+			fixDef.density = 1.0;
+			fixDef.friction = 0.5;
+			fixDef.restitution = 0.2
+
+			bodyDef = new Box2D.Dynamics.b2BodyDef;
+			bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
+
+			var x = 0;
+
+			for (var i = 0; i < 1; i += 1) {
+
+				// positions the center of the object (not upper left!)
+				bodyDef.position.x = 5;
+				bodyDef.position.y = 5;
+
+				fixDef.shape = new Box2D.Collision.Shapes.b2CircleShape(0.3);
+				world.CreateBody(bodyDef).CreateFixture(fixDef);
+			}
+		}
+
 		function setupSockets() {
 			socket = io.connect('http://localhost');
-			socket.on('connection');
+
 			socket.on('user connected', function(data) {
 				jQuery('body').append('<p>' + data.message + '</p>');
 			});
+
 			socket.on('place ball', function(data) {
 				createBall(data.x, data.y);
 			});
@@ -143,7 +173,7 @@
 				createBall(getMouseX(event), getMouseY(event));
 
 				// To server
-				socket.emit('drop', { x: getMouseX(event), y: getMouseY(event) });
+				socket.emit('dropped', { x: getMouseX(event), y: getMouseY(event) });
 			});
 		}
 
